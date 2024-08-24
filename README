@@ -1,0 +1,44 @@
+# WeatherApi
+
+## Overview
+This project is a weather API service with a frontend application. It uses Redis for caching API responses to improve performance and reduce external API calls.
+
+## Prerequisites
+* Docker
+* Docker Compose
+
+## Getting Started
+
+Follow these steps to get the WeatherApi up and running on your local machine:
+
+1. **Clone the Repository:**
+   ```sh
+   git clone <remote-repo-url>
+   cd WeatherApi
+   ```
+
+2. **Configure API Key:**
+   - Open the `appsettings.json` file in the project root.
+   - Locate the "ApiKey" field.
+   - Insert your API key:
+     ```json
+     {
+       "ApiKey": "your-api-key-here"
+     }
+     ```
+
+3. **Navigate to Project Directory:**
+   ```sh
+   cd WeatherApi
+   ```
+
+4. **Build and Run with Docker Compose:**
+   ```sh
+   docker-compose up --build
+   ```
+
+   This command will build the Docker images and start the containers for the WeatherApi and its dependencies.
+
+5. **Access the Application:**
+   Once the containers are up and running, you can access the WeatherApi frontend at `http://localhost:5173`.
+
