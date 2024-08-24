@@ -1,0 +1,26 @@
+# version: '3.8'
+
+# services:
+#   backend:
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Development
+#     networks:
+#       - app-network
+
+#   frontend:
+#     build:
+#       context: ./frontend/WeatherApp
+#       dockerfile: Dockerfile
+#     ports:
+#       - "5173:80"
+#     networks:
+#       - app-network
+
+# networks:
+#   app-network:
+#     driver: bridge
