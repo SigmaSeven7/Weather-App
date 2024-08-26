@@ -1,10 +1,13 @@
-import { Container, Row, Col, Spinner, Card } from 'react-bootstrap';
+import { Container, Row, Col, Spinner, Card, Button } from 'react-bootstrap';
 import { useWeather } from '../contexts/WeatherContext';
 import WeatherCard from './WeatherCard';
+import MapSelector from './MapSelector';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 const WeatherDashboard = () => {
-  const { userWeather, otherWeathers, loading } = useWeather();
+  const { userWeather, otherWeathers, loading, addLocation } = useWeather();
+  const [showMap, setShowMap] = useState(false);
 
   if (loading) {
     return (
@@ -13,6 +16,11 @@ const WeatherDashboard = () => {
       </div>
     );
   }
+
+  const handleLocationSelect = (city: string, country: string) => {
+    addLocation(city, country);
+    setShowMap(false);
+  };
 
   return (
     <Container fluid className="weather-dashboard py-5">
@@ -47,6 +55,14 @@ const WeatherDashboard = () => {
                       </Col>
                     ))}
                   </Row>
+                </section>
+                <section className='mb-4 mt-8'>
+                  <Button onClick={() => setShowMap(!showMap)} className="mb-3">
+                    {showMap ? 'Hide Map' : 'Add New Location'}
+                  </Button>
+                  {showMap && (
+                    <MapSelector onLocationSelect={handleLocationSelect} />
+                  )}
                 </section>
               </Card.Body>
             </Card>

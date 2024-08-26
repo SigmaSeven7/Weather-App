@@ -47,12 +47,12 @@ public async Task<WeatherReport> GetWeatherAsync(WeatherReportRequest request)
 
         if (request.latitude.HasValue && request.longitude.HasValue)
         {
-            // If latitude and longitude are provided, construct the URL accordingly
+
             url = $"{_getWeatherBaseUrl}?lat={request.latitude}&lon={request.longitude}&appid={_apiKey}";
         }
         else if (!string.IsNullOrEmpty(request.city) && !string.IsNullOrEmpty(request.country))
         {
-            // If city and country are provided, construct the URL accordingly
+      
             url = $"{_getWeatherBaseUrl}?q={request.city},{request.country}&appid={_apiKey}";
         }
         else
@@ -65,10 +65,10 @@ public async Task<WeatherReport> GetWeatherAsync(WeatherReportRequest request)
 
         if (response.IsSuccessStatusCode)
         {
-            // Deserialize the JSON response into a WeatherReport object using System.Text.Json
+    
             var weatherReport = await response.Content.ReadFromJsonAsync<WeatherReport>();
 
-            // Cache the weather data in Redis as a JSON string using System.Text.Json
+
             var serializedWeather = JsonSerializer.Serialize(weatherReport);
             await db.StringSetAsync(cacheKey, serializedWeather, TimeSpan.FromMinutes(30));
 

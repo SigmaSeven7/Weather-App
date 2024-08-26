@@ -2,7 +2,8 @@ import React from 'react';
 import { WeatherProvider } from './contexts/WeatherContext';
 import WeatherDashboard from './components/WeatherDashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'; // We'll add some custom styles here
+import 'leaflet/dist/leaflet.css';
+import './App.css'; 
 
 const App: React.FC = () => {
   return (

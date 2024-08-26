@@ -6,6 +6,7 @@ interface WeatherContextType {
   userWeather: Weather | null;
   otherWeathers: Weather[];
   loading: boolean;
+  addLocation: (city: string, country: string) => void;
 }
 
 const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
@@ -28,6 +29,25 @@ export const WeatherProvider: React.FC<React.PropsWithChildren<{}>> = ({ childre
     { name: 'New York', country: 'US' },
     { name: 'Tokyo', country: 'JP' }
   ];
+
+
+  const addLocation = async (city: string, country: string) => {
+    setLoading(true);
+    try {
+      const newWeather = await fetchWeather(null, null, city, country);
+      if (newWeather) {
+        setOtherWeathers(prev => [...prev, newWeather]);
+        
+        const savedLocations = JSON.parse(localStorage.getItem('savedLocations') || '[]') as City[];
+        savedLocations.push({ name: city, country });
+        localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
+      }
+    } catch (error) {
+      console.error('Error fetching weather for new location:', error);
+    }
+    setLoading(false);
+  };
+
 
   useEffect(() => {
     const fetchUserLocationWeather = async () => {
@@ -61,7 +81,10 @@ export const WeatherProvider: React.FC<React.PropsWithChildren<{}>> = ({ childre
     };
 
     const fetchOtherWeathers = async () => {
-      const weatherPromises = otherCities.map(city =>
+      const savedLocations = JSON.parse(localStorage.getItem('savedLocations') || '[]') as City[];
+      const allLocations = [...otherCities, ...savedLocations];
+      
+      const weatherPromises = allLocations.map(city =>
         fetchWeather(null, null, city.name, city.country)
       );
       const results = await Promise.all(weatherPromises);
@@ -73,7 +96,7 @@ export const WeatherProvider: React.FC<React.PropsWithChildren<{}>> = ({ childre
   }, []);
 
   return (
-    <WeatherContext.Provider value={{ userWeather, otherWeathers, loading }}>
+    <WeatherContext.Provider value={{ addLocation,userWeather, otherWeathers, loading }}>
       {children}
     </WeatherContext.Provider>
   );
